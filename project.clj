@@ -3,7 +3,7 @@
   :url "http://example.com/FIXME"
   :license {:name "GPL3 or any later versions"
             :url "http://www.gnu.org/licenses/gpl-3.0.en.html"}
-  :dependencies [[org.clojure/clojure "1.8.0-RC4"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
                  [expectations "2.0.9"]]
   :plugins [[lein-expectations "0.0.8"]]
   :main ^:skip-aot dijkstra.core

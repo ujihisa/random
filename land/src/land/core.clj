@@ -3,24 +3,24 @@
 
 (defn flat?'
   "true if all the heights of the top blocks of the chunk are same"
-  [chunk getHighestBlockAt getWorld]
+  [chunk getHighestBlockAt getChunkSnapshot]
   (let [blocks (for [x (range 16)
                      z (range 16)]
-                 (getHighestBlockAt (getWorld chunk) x z))]
+                 (getHighestBlockAt (getChunkSnapshot chunk) x z))]
     (first blocks)))
 
 (defn flat? [chunk]
   (flat?' chunk
-          (fn [world x y z]
-            (.getHighestBlockAt world x y z))
+          (fn [chunk-snapshot x y z]
+            (.getHighestBlockAt chunk-snapshot x z))
           (fn [chunk]
-            (.getWorld chunk))))
+            (.getChunkSnapshot chunk))))
 
 (prn (let [getHighestBlockAt
-           (fn [world xdiff zdiff] :dirt)
-           getWorld
+           (fn [chunk-snapshot x z] :dirt)
+           getChunkSnapshot
            (fn [chunk] :world)]
-       (flat?' :dummy-chunk getHighestBlockAt getWorld)))
+       (flat?' :dummy-chunk getHighestBlockAt getChunkSnapshot)))
 
 (defn -main
   "I don't do a whole lot ... yet."

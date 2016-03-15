@@ -17,7 +17,7 @@
             (.getChunkSnapshot chunk))))
 
 (let [dummy-chunk-snapshot
-      (-> (for [x (range 16)
+      (->> (for [x (range 16)
                 z (range 16)]
             [[x z] (rand-nth [10 10 10 10 10 10 10 11])])
         (into {}))
@@ -25,9 +25,12 @@
       (fn [chunk-snapshot x z] :dirt)
       getChunkSnapshot
       (fn [chunk] :world)]
-  (doseq [[k v] dummy-chunk-snapshot]
-    (prn :key k :value v))
-  (prn)
+  (println "-----------------------------------------------")
+  (doseq [x (range 16)]
+    (doseq [z (range 16)]
+      (print (str (get dummy-chunk-snapshot [x z]) " ")))
+    (prn))
+  (println "-----------------------------------------------")
   (prn (flat?' :dummy-chunk getHighestBlockAt getChunkSnapshot)))
 
 (defn -main

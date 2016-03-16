@@ -16,16 +16,16 @@
           (fn [chunk]
             (.getChunkSnapshot chunk))))
 
-(prn (let [dummy-chunk-snapshot
-           (-> (for [x []]
-                 x)
-             (into {}))
-           getHighestBlockAt
-           (fn [chunk-snapshot x z] :dirt)
-           getChunkSnapshot
-           (fn [chunk] :world)]
-       (prn 'dummy-chunk-snapshot dummy-chunk-snapshot)
-       (flat?' :dummy-chunk getHighestBlockAt getChunkSnapshot)))
+(let [dummy-chunk-snapshot
+      (-> (for [x []]
+            x)
+        (into {}))
+      getHighestBlockAt
+      (fn [chunk-snapshot x z] :dirt)
+      getChunkSnapshot
+      (fn [chunk] :world)]
+  (prn 'dummy-chunk-snapshot dummy-chunk-snapshot)
+  (prn (flat?' :dummy-chunk getHighestBlockAt getChunkSnapshot)))
 
 (defn -main
   "I don't do a whole lot ... yet."

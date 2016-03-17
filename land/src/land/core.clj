@@ -2,7 +2,10 @@
   (:gen-class))
 
 (defn flat?'
-  "true if all the heights of the top blocks of the chunk are same"
+  "true if all the heights of the top blocks of the chunk are
+  (1) same, or (2) <=1 diff for each directions.
+  i.e. Players can go from any point to another any point just by
+  walking and jumping straight."
   [chunk getHighestBlockAt getChunkSnapshot]
   (let [blocks (for [x (range 16)
                      z (range 16)]
@@ -19,7 +22,7 @@
 (let [dummy-chunk-snapshot
       (->> (for [x (range 16)
                 z (range 16)]
-            [[x z] (rand-nth [10 10 10 10 10 10 10 11])])
+            [[x z] (rand-nth [10 10 10 10 10 10 10 11 11 11 11 12])])
         (into {}))
       getHighestBlockAt
       (fn [chunk-snapshot x z] :dirt)
@@ -28,7 +31,8 @@
   (println "-----------------------------------------------")
   (doseq [x (range 16)]
     (doseq [z (range 16)]
-      (print (str (get dummy-chunk-snapshot [x z]) " ")))
+      (print (get dummy-chunk-snapshot [x z])
+             ""))
     (prn))
   (println "-----------------------------------------------")
   (prn (flat?' :dummy-chunk getHighestBlockAt getChunkSnapshot)))

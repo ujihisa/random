@@ -37,6 +37,8 @@
   (println "-----------------------------------------------")
   (prn (flat?' :dummy-chunk getHighestBlockAt getChunkSnapshot)))
 
+; land-purchasable == flat? + no-water?)
+
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]

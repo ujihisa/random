@@ -58,18 +58,16 @@
       (if (<= 16 i)
         memo
         (recur (inc i)
-               (loop [j 0 memo memo]
-                 (if (<= 16 j)
-                   memo
-                   (let [constraint-points
-                         (for [xdiff [-1 0 1]
-                               zdiff [-1 0 1]
-                               :when (not= 0 xdiff zdiff)
-                               :let [y (get memo [(- i xdiff) (- j zdiff)])]
-                               :when y]
-                           y)]
-                     (recur (inc j)
-                            (conj memo [[i j] (gen constraint-points)]))))))))))
+               (letfn [(f [memo j]
+                         (let [constraint-points
+                               (for [xdiff [-1 0 1]
+                                     zdiff [-1 0 1]
+                                     :when (not= 0 xdiff zdiff)
+                                     :let [y (get memo [(- i xdiff) (- j zdiff)])]
+                                     :when y]
+                                 y)]
+                           (conj memo [[i j] (gen constraint-points)])))]
+                 (reduce f memo (range 16))))))))
 
 (debug-print-chunk (gen-smooth-chunk))
 

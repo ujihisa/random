@@ -54,18 +54,18 @@
                         :when (every? #(<= -1 (- y %) 1) constraint-points)]
                     y)))
               (gen [(inc (rand-int 10))])))]
-    (letfn [(g [memo i]
-              (reduce (fn [memo j]
+    (letfn [(f [memo x]
+              (reduce (fn [memo z]
                         (let [constraint-points
                               (for [xdiff [-1 0 1]
                                     zdiff [-1 0 1]
                                     :when (not= 0 xdiff zdiff)
-                                    :let [y (get memo [(- i xdiff) (- j zdiff)])]
+                                    :let [y (get memo [(- x xdiff) (- z zdiff)])]
                                     :when y]
                                 y)]
-                          (conj memo [[i j] (gen constraint-points)])))
+                          (conj memo [[x z] (gen constraint-points)])))
                       memo (range 16)))]
-      (reduce g {} (range 16)))))
+      (reduce f {} (range 16)))))
 
 (debug-print-chunk (gen-smooth-chunk))
 

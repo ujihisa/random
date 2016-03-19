@@ -45,27 +45,27 @@
       (into {}))))
 
 (defn gen-smooth-chunk []
-  (letfn [(gen [constraint-points]
-            (if (seq constraint-points)
-              (let [[base & constraint-points] constraint-points]
-                (rand-nth
-                  (for [diff [-1 0 1]
-                        :let [y (+ base diff)]
-                        :when (every? #(<= -1 (- y %) 1) constraint-points)]
-                    y)))
-              (gen [(inc (rand-int 10))])))]
-    (letfn [(f [memo x]
-              (reduce (fn [memo z]
-                        (let [constraint-points
-                              (for [xdiff [-1 0 1]
-                                    zdiff [-1 0 1]
-                                    :when (not= 0 xdiff zdiff)
-                                    :let [y (get memo [(- x xdiff) (- z zdiff)])]
-                                    :when y]
-                                y)]
-                          (conj memo [[x z] (gen constraint-points)])))
-                      memo (range 16)))]
-      (reduce f {} (range 16)))))
+  (let [gen (fn gen [constraint-points]
+              (if (seq constraint-points)
+                (let [[base & constraint-points] constraint-points]
+                  (rand-nth
+                    (for [diff [-1 0 1]
+                          :let [y (+ base diff)]
+                          :when (every? #(<= -1 (- y %) 1) constraint-points)]
+                      y)))
+                (gen [(inc (rand-int 10))])))
+        f (fn [memo x]
+            (reduce (fn [memo z]
+                      (let [constraint-points
+                            (for [xdiff [-1 0 1]
+                                  zdiff [-1 0 1]
+                                  :when (not= 0 xdiff zdiff)
+                                  :let [y (get memo [(- x xdiff) (- z zdiff)])]
+                                  :when y]
+                              y)]
+                        (conj memo [[x z] (gen constraint-points)])))
+                    memo (range 16)))]
+    (reduce f {} (range 16))))
 
 (debug-print-chunk (gen-smooth-chunk))
 
